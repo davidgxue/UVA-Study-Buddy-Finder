@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+{% load socialaccount %}
+<html lang="en">
+
+	<head>
+    	
+    	<meta charset="UTF-8">
+    	<title>Edit Account</title>
+		{% if user.is_authenticated %}
+			{% include 'studybuddyfinder/header.html' %}
+		{% else %}
+			{% include 'studybuddyfinder/notLoggedInHeader.html' %}
+		{% endif %}
+	</head>
+
+	<body>
+	<div class="container" style="padding-top:65px; padding-bottom:60px">
+	
+	<div class="card shadow rounded mb-3">
+		<h3 class="card-header h3">{% block title %}Edit Profile{% endblock %}</h3>
+		<div class="card-body">
+	
+		
+
+		{% block content %}
+	
+    <form method="POST" class="form-group">
+        {% csrf_token %}
+        {{ form.as_p }}
+		<a class="btn btn-primary" href= "{% url 'uva_course_list' %}">Add UVA Course to Profile</a>
+		<br>
+		<br>
+        <button type="submit" class="btn btn-success">Update</button>
+        <a type="submit" class="btn btn-warning" href= "{% url 'self_profile' %}">Cancel</a>
+    </form>
+
+		 
+		{% endblock %}
+	</div>
+	</div>
+	</div>
+	</body>
+{% include 'studybuddyfinder/footer.html' %}
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+{% load static %}
+{% load socialaccount %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+	{% if user.is_authenticated %}
+		{% include 'studybuddyfinder/header.html' %}
+	{% else %}
+		{% include 'studybuddyfinder/notLoggedInHeader.html' %}
+	{% endif %}
+</head>
+<div class="container" style="padding-top:65px; padding-bottom:60px">
+<body>
+	<div class="card shadow rounded mb-3">
+			  <h3 class="card-header h3">{% block title %}Create a Profile{% endblock %}</h3>
+			  <div class="card-body">
+{% if user.is_authenticated %}
+	
+
+
+
+{% block content %}
+    <form method="POST" class="form-group">
+        {% csrf_token %}
+        <label for="username">Username: </label>
+        <input id="username" type="text" name="username" value="{{ current_name }}">
+        {{ form.as_p }}
+		<!--add uva courses button does not work, it relies on UserProfile existence but it does not exist on register
+		<a class="btn btn-primary" href= "{% url 'uva_course_list' %}">Add UVA Course to Profile</a>
+		-->
+	
+        <button type="submit" class="btn btn-success">Register</button>
+    </form>
+	{% if alert_flag %}
+		<script>alert("Thank you for registering!")</script>  
+	{% endif %}
+{% endblock %}
+	</div>
+	</div>
+
+{% endif %}
+</body>
+</div>
+{% include 'studybuddyfinder/footer.html' %}
+</html>

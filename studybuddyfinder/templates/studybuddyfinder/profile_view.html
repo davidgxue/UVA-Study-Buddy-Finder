@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+{% load static %}
+{% load socialaccount %}
+
+<html lang="en">
+
+	<head>
+
+    	<meta charset="UTF-8">
+    	<title>{{ user.username }}'s Profile </title>
+		{% if user.is_authenticated %}
+			{% include 'studybuddyfinder/header.html' %}
+		{% else %}
+			{% include 'studybuddyfinder/notLoggedInHeader.html' %}
+		{% endif %}
+	</head>
+	<div class="container" style="padding-top:65px; padding-bottom:60px">
+	<body>
+		
+		<div class="card shadow rounded mb-3">
+			  <h3 class="card-header h3">{{ user.username }}'s Profile</h3>
+			  <div class="card-body">
+				
+
+			  
+		
+		
+		{% if show_edit %}
+			{% if user.userprofile.student_verified %}
+				<p> <b>🌟You are verified</b> as a UVA student through Email address!</p>
+			{% else %}
+				<p> <b>❌You are NOT verified</b> as a UVA student! Your Email domain is not virginia.edu.</p>
+			{% endif %}
+		{% else %}
+			{% if user.userprofile.student_verified %}
+				<p> <b>🌟{{ user.username }} is verified</b> as a UVA student through Email address!</p>
+			{% else %}
+				<p> <b>❌{{ user.username }} is NOT verified</b> as a UVA student! Their Email domain is not virginia.edu.</p>
+			{% endif %}
+		{% endif %}
+		
+		{% if not user.userprofile.hide_school or show_edit %}
+
+			<p><b>School:</b> {{ user.userprofile.school }}</p>
+
+		{% endif %}
+
+		{% if user.userprofile.hide_school and show_edit %}
+
+			<p><i>You have your school hidden from other users.</i></p>
+
+		{% endif %}
+
+		{% if not user.userprofile.hide_state or show_edit %}
+
+			<p><b>Hometown: </b>{{ user.userprofile.city }}, {{ user.userprofile.state }}</p>
+
+		{% endif %}
+
+		{% if user.userprofile.hide_state and show_edit %}
+
+			<p><i>You have your location hidden from other users.</i></p>
+
+		{% endif %}
+
+		{% if not user.userprofile.hide_major and not show_edit%}
+
+			<p><b>Major:</b> {{ user.userprofile.major }} </p>
+
+		{% endif %}
+		
+		
+		
+		{% if not user.userprofile.hide_year and not show_edit%}
+
+			<p><b>Year:</b> {{ user.userprofile.year }}</p>
+
+		{% endif %}
+
+		
+		{% if show_edit %}
+
+			<p><b>Major:</b> {{ user.userprofile.major }} </p>
+				{% if user.userprofile.hide_major and show_edit %}
+
+				<p><i>You have your major hidden from other users.</i></p>
+			
+				{% endif %}
+				
+			<p><b>Year:</b> {{ user.userprofile.year }}</p>
+			
+				{% if user.userprofile.hide_year and show_edit %}
+
+				<p><i>You have your year hidden from other users.</i></p>
+			
+				{% endif %}
+
+		{% endif %}
+
+		<p><b>Bio:</b> {{ user.userprofile.bio }}</p>
+		
+		
+		
+		{% if show_edit or in_friend_list %}
+			<p><b>Discord ID:</b> {{ user.userprofile.discord_id }}</p>
+			<p><b>Zoom ID:</b> {{ user.userprofile.zoom_id }}</p>
+		{% else %}
+			<p><b>Discord ID:</b> Hidden (Only friends can see each other's IDs)</p>
+			<p><b>Zoom ID:</b> Hidden (Only friends can see each other's IDs)</p>
+		{% endif %}
+		
+		
+		<p><b>UVA Courses:</b></p>
+			
+				<ul class="list-group list-scroll">
+					{% for course in courses %}
+					<li class="list-group-item"><b>{{ member.user.username}}</b>
+						<b> {{course.subject}} {{course.course_number}}: {{course.course_name}}</b>
+						{% if show_edit %}
+						<a class="btn btn-outline-danger btn-sm" href= "{% url 'remove_uva_course' course.id %}">Remove</a>
+						{% endif %}
+					</li>
+					{% endfor %}
+				</ul>
+
+			
+		
+		{% if show_friend_request %}
+
+			<a class="btn btn-secondary" href= "{% url 'send-friend-request-profile' user.id %}">Add Friend</a>
+			<a type="submit" class="btn btn-primary" href= "{% url 'user_list' %}">Back</a>
+		{% else %}
+			{% if not show_edit %}
+			<a type="submit" class="btn btn-primary" href= "{{request.META.HTTP_REFERER}}">Back</a>
+			{% endif %}
+		{% endif %}
+
+		{% if show_edit %}
+			
+			<a class="btn btn-secondary" href="{% url 'edit_account' %}">Edit Account</a>
+			<a class="btn btn-primary" href="{{request.META.HTTP_REFERER}}">Back</a>
+			
+
+		{% endif %}
+		</div>
+		</div>
+		
+
+	</body>
+	</div>
+	{% include 'studybuddyfinder/footer.html' %}
+</html>

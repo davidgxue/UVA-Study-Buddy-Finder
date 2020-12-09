@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+{% load static %}
+{% load socialaccount %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Buddies</title>
+	{% if alert_flag %}
+		<script>alert("Thank you for registering!")</script>  
+	{% endif %}
+	{% if user.is_authenticated %}
+		{% include 'studybuddyfinder/header.html' %}
+	{% else %}
+		{% include 'studybuddyfinder/notLoggedInHeader.html' %}
+	{% endif %}
+</head>
+<body>
+<div class="container" style="padding-top:65px; padding-bottom:70px">
+<!-- Checks if user is logged in first otherwise they are not allowed to see other users -->
+ {% if user.is_authenticated %}
+
+
+<h1>My Study Buddies</h1>
+
+<div class="row">
+	<div class="col-md-6">
+	<h2> Friends </h2>
+	<div class="card shadow rounded mb-3">
+	  <h5 class="card-header h5">Friend List</h5>
+	  <div class="card-body">
+		<ul class="list-group list-group-flush">
+			{% if list_of_all_friends %}
+
+				{% for user_profile_objects in list_of_all_friends %}
+				<li class="list-group-item"><b><a href="{% url 'profile' user_profile_objects.user.username %}">{{ user_profile_objects.user.username}}</b></a>
+					<a class = "btn btn-sm btn-outline-danger float-right" href= "{% url 'delete-friend'  user_profile_objects.id %}">Remove</a>
+				</li>
+
+				{% endfor %}
+		
+			{% else %}
+		<p>You currently have no friends :(</p>
+			{% endif %}
+		</ul>
+	  </div>
+	</div>
+
+	
+	
+
+<div class="card shadow rounded mb-3">
+	  <h5 class="card-header h5">Incoming Friend Requests</h5>
+	  <div class="card-body">
+		<ul class="list-group list-group-flush">
+		{% if pending %}
+		
+
+		{% for friend_request_objects in pending %}
+				<li class="list-group-item"><b><a href="{% url 'profile' friend_request_objects.from_user.user.username %}">{{ friend_request_objects.from_user.user.username}}</b></a>
+					<div class="float-right">
+						<a class="btn btn-sm btn-success" href= "{% url 'accept-friend-request'  friend_request_objects.id %}">Accept</a>
+						<a class="btn btn-sm btn-danger" href= "{% url 'delete-friend-request'  friend_request_objects.id %}">Deny</a>
+					</div>
+				</li>
+
+		{% endfor %}
+		
+	{% else %}
+		<p>You currently have no incoming friend requests.</p>
+	{% endif %}
+		</ul>
+	  </div>
+	</div>
+	
+	
+
+<div class="card shadow rounded mb-3">
+	  <h5 class="card-header h5">Outgoing Friend Requests</h5>
+	  <div class="card-body">
+		<ul class="list-group list-group-flush">
+		{% if sent %}
+		
+
+		{% for friend_request_objects in sent %}
+				<li class="list-group-item"><b><a href="{% url 'profile' friend_request_objects.to_user.user.username %}">{{ friend_request_objects.to_user.user.username}}</b></a>
+				<a class="btn btn-sm btn-outline-danger float-right" href= "{% url 'delete-friend-request'  friend_request_objects.id %}">Cancel</a>
+				</li>
+
+		{% endfor %}
+		
+	{% else %}
+		<p>You currently have no outgoing friend requests.</p>
+	{% endif %}
+		
+		</ul>
+	  </div>
+	</div>
+	</div>
+
+
+<div class="col-md-6">
+	<h2>Study Groups</h2>
+			<div class="card shadow mb-3 rounded">
+			  <div class="card-header h5">
+				Create Your Own Group
+			  </div>
+			  <div class="card-body">
+				
+				<a class="btn btn-secondary" href= "{% url 'friends_list' '1' %}">Create Group</a>
+				{% if is_creating_group is 1%}
+				<p>You are creating a group.</p>
+
+				<form action=" /create_group/" method="post"> {% csrf_token %}
+						<label for="group_name">Group Name: </label>
+						<input id="group_name" type="text" name="group_name" value="{{ group_name }}">
+						<input class="btn btn-sm btn-success" type="submit" value="OK">
+						<a class="btn btn-sm btn-warning" href="{% url 'friends_list' '0' %}">Cancel</a>
+				</form>
+				{% endif %}
+			  </div>
+			</div>
+
+	
+
+
+<div class="card shadow rounded mb-3">
+	  <h5 class="card-header h5">Groups Owned</h5>
+	  <div class="card-body">
+		<ul class="list-group list-group-flush">
+				{% if owned_groups %}
+				
+
+				{% for group in owned_groups %}
+						<li class="list-group-item"> <a href="{% url 'group_view' group.id %}"><b>{{group.name}}</b></a>
+						</li>
+
+				{% endfor %}
+				
+			{% else %}
+				<p>You don't own any groups.</p>
+			{% endif %}
+		
+		
+		</ul>
+	  </div>
+	</div>
+	
+
+
+<div class="card shadow rounded mb-3">
+	  <h5 class="card-header h5">Groups where you are a member of ... </h5>
+	  <div class="card-body">
+		<ul class="list-group list-group-flush">
+				{% if groups %}
+		
+
+		{% for group in groups %}
+				<li class="list-group-item"> <a href="{% url 'group_view' group.id %}"><b>{{group.name}}</b></a>
+				</li>
+
+		{% endfor %}
+		
+	{% else %}
+		<p>You are not a member of any groups.</p>
+	{% endif %}
+		
+		
+		</ul>
+	  </div>
+	</div>
+	</div>
+	</div>
+
+
+
+
+
+
+  {% else %}
+  <a>Please login first to view the friends.</a>
+  {% endif %}
+  </div>
+</body>
+{% include 'studybuddyfinder/footer.html' %}
+</html>

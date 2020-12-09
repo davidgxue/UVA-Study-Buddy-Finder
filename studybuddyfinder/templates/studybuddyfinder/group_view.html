@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+{% load static %}
+{% load socialaccount %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Group {{ name }}</title>
+	{% if user.is_authenticated %}
+		{% include 'studybuddyfinder/header.html' %}
+	{% else %}
+		{% include 'studybuddyfinder/notLoggedInHeader.html' %}
+	{% endif %}
+</head>
+<div class="container" style="padding-top:65px; padding-bottom: 60px">
+<body>
+
+{% if user.is_authenticated %}
+
+<h1> Study Group: {{ name }}</h1>
+
+<div class="row">
+	<div class="col-md-7">
+
+		<div class="card shadow rounded mb-3">
+			  <h5 class="card-header h5">Study Group Announcements</h5>
+			  <div class="card-body">
+				{% if owner.user == user%}
+				<button class="btn btn-secondary mb-3" type="button" data-toggle="collapse" data-target="#AddAnnouncement" aria-expanded="false" aria-controls="AddAnnouncement">Add announcement</button>
+				<div class="collapse" id="AddAnnouncement">
+					<form action="/create_announcement/{{ group_id }}" method="post"> {% csrf_token %}
+						<label for="message">New Announcement: </label>
+						
+						<textarea class="form-control mb-1" id="message" type="text" name="message" value="{{ message }}"></textarea>
+						<input class="btn btn-sm btn-secondary" type="submit" value="Add Announcement">
+						<a class="btn btn-sm btn-warning" href="{% url 'group_view' group_id %}">Cancel</a>
+				</form>
+				
+				</div>
+				<br>
+				{% endif %}
+				<ul class="list-group list-group-flush">
+				
+							
+						
+						{% if announcements %}
+		
+						{% for announcement in announcements %}
+						
+						<li class="list-group-item">
+							
+							<p> {{ announcement.message }} </p>
+							<p class="float-right"><em><small>Posted by {{ announcement.poster }} on {{announcement.date}} </small></em></p>
+							{% if owner.user == user%}
+								<br>
+								<br>
+								<p><a class = "mt-2 btn btn-danger btn-sm float-right" href= "/remove_announcement/{{ group_id }}/{{ announcement.id }}">Remove</a></p>
+							{% endif %}
+						
+						</li>
+
+						{% endfor %}
+						
+						{% else %}
+						
+							<p> There are currently no announcements from the owner.</p>
+						{% endif %}
+							   
+								
+				 
+				
+				</ul>
+			  </div>
+			</div>
+			<div class="accordion" id="AvailCollapse">
+			<div class="card shadow rounded mb-3">
+			  <a href="" class="card-header h5" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+				Group Availability
+				
+			  </a>
+			  <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#AvailCollapse">
+			  <div class="card-body">
+				
+				
+					
+					
+					
+					{% if can_post_avail %}	
+						
+						<button class="btn btn-secondary mb-3" type="button" data-toggle="collapse" data-target="#AddCalendar" aria-expanded="false" aria-controls="#AddCalendar">Add Availability</button>
+						<div class="collapse" id="AddCalendar">
+					<form action="/create_calendar/{{ group_id }}" method="post"> {% csrf_token %}
+						<label for="monttt">Monday: 10 AM to 12 PM <input id="monttt" type="checkbox" name="monttt"></label>
+						<label for="montttwo">12 to 2 PM <input id="montttwo" type="checkbox" name="montttwo"></label>
+						<label for="monttf">2 to 4 PM <input id="monttf" type="checkbox" name="monttf"></label>
+						<label for="monfts">4 to 6 PM <input id="monfts" type="checkbox" name="monfts"></label>
+						<label for="monste">6 to 8 PM <input id="monste" type="checkbox" name="monste"></label>
+						<br>
+						<label for="tuesttt">Tuesday: 10 AM to 12 PM <input id="tuesttt" type="checkbox" name="tuesttt"></label>
+						<label for="tuestttwo">12 to 2 PM <input id="tuestttwo" type="checkbox" name="tuestttwo"></label>
+						<label for="tuesttf">2 to 4 PM <input id="tuesttf" type="checkbox" name="tuesttf"></label>
+						<label for="tuesfts">4 to 6 PM <input id="tuesfts" type="checkbox" name="tuesfts"></label>
+						<label for="tuesste">6 to 8 PM <input id="tuesste" type="checkbox" name="tuesste"></label>
+						<br>
+						<label for="wedttt">Wednesday: 10 AM to 12 PM <input id="wedttt" type="checkbox" name="wedttt"></label>
+						<label for="wedtttwo">12 to 2 PM <input id="wedtttwo" type="checkbox" name="wedtttwo"></label>
+						<label for="wedttf">2 to 4 PM <input id="wedttf" type="checkbox" name="wedttf"></label>
+						<label for="wedfts">4 to 6 PM <input id="wedfts" type="checkbox" name="wedfts"></label>
+						<label for="wedste">6 to 8 PM <input id="wedste" type="checkbox" name="wedste"></label>
+						<br>
+						<label for="thursttt">Thursday: 10 AM to 12 PM <input id="thursttt" type="checkbox" name="thursttt"></label>
+						<label for="thurstttwo">12 to 2 PM <input id="thurstttwo" type="checkbox" name="thurstttwo"></label>
+						<label for="thursttf">2 to 4 PM <input id="thursttf" type="checkbox" name="thursttf"></label>
+						<label for="thursfts">4 to 6 PM <input id="thursfts" type="checkbox" name="thursfts"></label>
+						<label for="thursste">6 to 8 PM <input id="thursste" type="checkbox" name="thursste"></label>
+						<br>
+						<label for="frittt">Friday: 10 AM to 12 PM <input id="frittt" type="checkbox" name="frittt"></label>
+						<label for="fritttwo">12 to 2 PM <input id="fritttwo" type="checkbox" name="fritttwo"></label>
+						<label for="frittf">2 to 4 PM <input id="frittf" type="checkbox" name="frittf"></label>
+						<label for="frifts">4 to 6 PM <input id="frifts" type="checkbox" name="frifts"></label>
+						<label for="friste">6 to 8 PM <input id="friste" type="checkbox" name="friste"></label>
+						<br>
+						<label for="satttt">Saturday: 10 AM to 12 PM <input id="satttt" type="checkbox" name="satttt"></label>
+						<label for="sattttwo">12 to 2 PM <input id="sattttwo" type="checkbox" name="sattttwo"></label>
+						<label for="satttf">2 to 4 PM <input id="satttf" type="checkbox" name="satttf"></label>
+						<label for="satfts">4 to 6 PM <input id="satfts" type="checkbox" name="satfts"></label>
+						<label for="satste">6 to 8 PM <input id="satste" type="checkbox" name="satste"></label>
+						<br>
+						<label for="sunttt">Sunday: 10 AM to 12 PM <input id="sunttt" type="checkbox" name="sunttt"></label>
+						<label for="suntttwo">12 to 2 PM <input id="suntttwo" type="checkbox" name="suntttwo"></label>
+						<label for="sunttf">2 to 4 PM <input id="sunttf" type="checkbox" name="sunttf"></label>
+						<label for="sunfts">4 to 6 PM <input id="sunfts" type="checkbox" name="sunfts"></label>
+						<label for="sunste">6 to 8 PM <input id="sunste" type="checkbox" name="sunste"></label>
+						<br>				
+						
+						<input class="btn btn-sm btn-secondary" type="submit" value="Add Availability">
+						<a class="btn btn-sm btn-warning" href="{% url 'group_view' group_id %}">Cancel</a>
+					</form>
+						
+				</div>
+				{% else %}
+					<button class="btn btn-primary mb-3 disabled"> Availability Already Posted </button>
+				{% endif %}
+				
+				<br>
+				
+				<ul class="list-group list-group-flush list-scroll"> 
+
+				
+
+			
+					{% if calendars %}
+					
+					{% for calendar in calendars %}
+					<li class="list-group-item">
+					<p><b>{{ calendar.scheduler }} is available on: </b></p>
+					
+						{% if calendar.monttt %}
+						<p> Monday 10 AM to 12 PM </p>
+						{% endif %}
+						{% if calendar.montttwo %}
+						<p> Monday 12 to 2 PM </p>
+						{% endif %}
+						{% if calendar.monttf %}
+						<p> Monday 2 to 4 PM </p>
+						{% endif %}
+						{% if calendar.monfts %}
+						<p> Monday 4 to 6 PM </p>
+						{% endif %}
+						{% if calendar.monste %}
+						<p> Monday 6 to 8 PM </p>
+						{% endif %}
+
+						{% if calendar.tuesttt %}
+						<p> Tuesday 10 AM to 12 PM</p>
+						{% endif %}
+						{% if calendar.tuestttwo %}
+						<p> Tuesday 12 to 2 PM </p>
+						{% endif %}
+						{% if calendar.tuesttf %}
+						<p> Tuesday 2 to 4 PM</p>
+						{% endif %}
+						{% if calendar.tuesfts %}
+						<p> Tuesday 4 to 6 PM</p>
+						{% endif %}
+						{% if calendar.tuesste %}
+						<p> Tuesday 6 to 8 PM</p>
+						{% endif %}
+
+						{% if calendar.wedttt %}
+						<p> Wednesday 10 AM to 12 PM</p>
+						{% endif %}
+						{% if calendar.wedtttwo %}
+						<p> Wednesday 12 to 2 PM</p>
+						{% endif %}
+						{% if calendar.wedttf %}
+						<p> Wednesday 2 to 4 PM</p>
+						{% endif %}
+						{% if calendar.wedfts %}
+						<p> Wednesday 4 to 6 PM</p>
+						{% endif %}
+						{% if calendar.wedste %}
+						<p> Wednesday 6 to 8 PM</p>
+						{% endif %}
+
+						{% if calendar.thursttt %}
+						<p> Thursday 10 AM to 12 PM</p>
+						{% endif %}
+						{% if calendar.thurstttwo %}
+						<p> Thursday 12 to 2 PM</p>
+						{% endif %}
+						{% if calendar.thursttf %}
+						<p> Thursday 2 to 4 PM</p>
+						{% endif %}
+						{% if calendar.thursfts %}
+						<p> Thursday 4 to 6 PM</p>
+						{% endif %}
+						{% if calendar.thursste %}
+						<p> Thursday 6 to 8 PM</p>
+						{% endif %}
+
+						{% if calendar.frittt %}
+						<p> Friday 10 AM to 12 PM</p>
+						{% endif %}
+						{% if calendar.fritttwo %}
+						<p> Friday 12 to 2 PM</p>
+						{% endif %}
+						{% if calendar.frittf %}
+						<p> Friday 2 to 4 PM</p>
+						{% endif %}
+						{% if calendar.frifts %}
+						<p> Friday 4 to 6 PM</p>
+						{% endif %}
+						{% if calendar.friste %}
+						<p> Friday 6 to 8 PM</p>
+						{% endif %}
+
+						{% if calendar.satttt %}
+						<p> Saturday 10 AM to 12 PM</p>
+						{% endif %}
+						{% if calendar.sattttwo %}
+						<p> Saturday 12 to 2 PM</p>
+						{% endif %}
+						{% if calendar.satttf %}
+						<p> Saturday 2 to 4 PM</p>
+						{% endif %}
+						{% if calendar.satfts %}
+						<p> Saturday 4 to 6 PM</p>
+						{% endif %}
+						{% if calendar.satste %}
+						<p> Saturday 6 to 8 PM</p>
+						{% endif %}
+
+						{% if calendar.sunttt %}
+						<p> Sunday 10 AM to 12 PM</p>
+						{% endif %}
+						{% if calendar.suntttwo %}
+						<p> Sunday 12 to 2 PM</p>
+						{% endif %}
+						{% if calendar.sunttf %}
+						<p> Sunday 2 to 4 PM</p>
+						{% endif %}
+						{% if calendar.sunfts %}
+						<p> Sunday 4 to 6 PM</p>
+						{% endif %}
+						{% if calendar.sunste %}
+						<p> Sunday 6 to 8 PM</p>
+						{% endif %}
+						
+						
+							<br>
+							<br>
+							{% if user == calendar.scheduler.user or owner.user == user %}
+							<p><a class = "mt-2 btn btn-danger btn-sm float-right" href= "/remove_calendar/{{ group_id }}/{{ calendar.id }}">Remove</a></p>
+							{% endif %}
+					
+					</li>
+
+					{% endfor %}
+					
+					
+					{% endif %}
+								
+				 
+				
+				</ul>
+			  </div>
+				</div>
+			</div>
+
+
+	</div>
+		</div>
+<div class="col-md-5">
+<div class="card shadow rounded mb-3">
+	  <h5 class="card-header h5">Group Members</h5>
+	  <div class="card-body">
+		<h6 class="card-title"><b>Owner: {{owner.user.username}}</b></h6>
+		<ul class="list-group list-group-flush">
+
+		<h6 class="card-title">Members:</h6>
+		{% if members %}
+		
+
+		{% for member in members %}
+				<li class="list-group-item"><b><a href= "{% url 'profile' member.user.username %}">{{ member.user.username}}</a></b>
+                    {% if owner.user == user %}
+					    <a class="btn btn-sm btn-danger float-right" href= "{% url 'remove_group_member' group_id member.id %}">Remove</a></button>
+                    {% endif %}
+				</li>
+
+		{% endfor %}
+		
+	{% else %}
+		<p>There are no members other than the owner in this group.</p>
+	{% endif %}
+			{% if not owner.user == user%}
+				{% for member in members %}
+					{% if member.user == user %}
+					<li class="list-group-item">
+					<a class="btn btn-sm btn-danger float-right" href= "{% url 'remove_group_member' group_id member.id %}">Leave Group</a></button>
+					</li>
+					{% endif %}
+				{% endfor %}
+			{% endif %}
+		</ul>
+	  </div>
+	</div>
+	
+	
+
+
+{% if owner.user == user%}
+<div class="card shadow rounded mb-3">
+	  <h5 class="card-header h5">Add Your Friends to Group (as Owner)</h5>
+	  <div class="card-body">
+		
+		<ul class="list-group list-group-flush">
+		{% if friends %}
+		
+
+		{% for friend in friends %}
+                {% if friend not in members%}
+                    <li class="list-group-item"><b><a href="{% url 'profile' friend.user.username %}">{{ friend.user.username}}</a></b>
+                        {% if owner.user == user %}
+                        <a class = "btn btn-outline-secondary btn-sm float-right" href= "{% url 'add_group_member' group_id friend.id %}">Add to Group</a>
+                        {% endif %}
+                    </li>
+                {% endif %}
+		{% endfor %}
+		
+	{% else %}
+		<p>You have no friends that can be added to this group.</p>
+	{% endif %}
+		
+		</ul>
+	  </div>
+	</div>
+{% endif %}
+</div>
+
+
+{% else %}
+<a>Permission Denied. No permission to access this page.</a>
+{% endif %}
+</body>
+</div>
+{% include 'studybuddyfinder/footer.html' %}
+</html>

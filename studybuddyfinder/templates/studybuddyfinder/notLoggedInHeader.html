@@ -1,0 +1,31 @@
+{% load socialaccount %}
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href='{% static "base.css" %}'>
+<link rel="icon" href='{% static "icon.png" %}'>
+<div class="container">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top navbar-rounded shadow">
+    <a href="#" class="navbar-brand">
+		<img src="/static/icon.png" width="25" height="25" alt="">
+        <span class="d-lg-inline-block d-none"><b>Study Buddy Finder</b></span>
+        <i class="fa fa-star d-inline-block d-lg-none"></i>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <!-- collapse class will hide everything in the navbar once on mobile display -->
+
+        <div class="navbar-nav ml-auto">
+            <a class="nav-item nav-link active" href="{% provider_login_url 'google' %}">Login/Sign Up with Google</a>
+        </div>
+
+        
+    </div>
+</nav>
+</div>
+
+

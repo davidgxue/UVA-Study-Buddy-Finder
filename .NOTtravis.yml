@@ -1,0 +1,22 @@
+language: python
+python:
+- '3.8'
+-
+services:
+- postgresql
+
+install:
+- pip install -r requirements-travis.txt
+before_script:
+- psql -c 'create database test_db;' -U postgres
+script:
+- python manage.py makemigrations
+- python manage.py migrate
+- python manage.py test
+deploy:
+  provider: heroku
+  api_key:
+    secure: U/9CWgXalBKcbIA/m9CDu5sUmsPRrVb4vINJG58LQivfE0BTd3waBdeWRH5WonPXDJEte0YqzjVLucHDxtySOT+4jc66I2UPkn+H1cjPhAWr7YEtmUVb2npeSwH0vDFs4jSvAYuJvvGvo0ZgNjlWsT0YBXUisOO9JAkNc1WIi9Ts7RCfNarBF2fUKzt7dXkhIluhxo+T4dlcrCyPjxEz3n4fqvUMfAQRx73/PQ6bPM9wRFk1zwrNiXyRNhRTVj6rBHXFnSmBNEsDAgop6P5oClC9QyuDlTcYFe7yXWfvzDlU3IvM99WektHdyAzsp3pfNLcvR3ftyBGo0F9uKjveIgGVv7remxiXVX/gyqH6EL3cYVGwObnbltgYaKubLIwMY5ZWbbCaQ4AeHCSU3+qZpWUCyw8oGey12jufcF6G7N2HU2VJktt6/hLzDgDQG0twCr6gIi1/380qypKKAm0u3KE9drjTYoANojgjg8+Djs8ynGV8YqYAZotca8qLakcaDw4r8EzI1PzaBnB1jKT+CSsz8uRIac0lm/8bHSdNBkVXjL5b/2C2q8RCAoCeB1g+8YOE08RxN2Jjh1nV1QPwrVPfwHVY30/JMDJLFnkIpO3JPSRCTeuBfmdJhYHxktQXE1Bbcj/trGc/NCitsJJO4/okd/SKIeDUd5RlNdm+x+M=
+  app: studdy-buddy-finder
+  on:
+    repo: uva-cs3240-f20/project-2-02

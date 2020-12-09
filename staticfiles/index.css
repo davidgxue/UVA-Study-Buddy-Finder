@@ -1,0 +1,14 @@
+.masthead {
+  height: 100vh;
+  background-image: url('https://cdn.pixabay.com/photo/2020/03/06/08/00/laptop-4906312_1280.jpg');
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+body{
+    padding-top:56px
+}

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+{% load static %}
+{% load socialaccount %}
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <title>UVA Courses</title>
+	{% if alert_flag %}
+		<script>alert("Thank you for registering!")</script>  
+	{% endif %}
+	{% if user.is_authenticated %}
+		{% include 'studybuddyfinder/header.html' %}
+	{% else %}
+		{% include 'studybuddyfinder/notLoggedInHeader.html' %}
+	{% endif %}
+
+</head>
+
+<body>
+
+<div class="container" style="padding-top:65px; padding-bottom:75px">
+<!-- Checks if user is logged in first otherwise they are not allowed to see other users -->
+	{% if user.is_authenticated %}
+		<div class="row">
+			<div class="col-md-4">
+				<h2>Search for a Course</h2>
+			</div>
+			<div class="col-md-8">
+				
+				<h2>Search Results</h2>
+				
+			</div>
+		</div>
+
+
+			<div class="row">
+				<div class="col-md-4 px-0">
+					<div class="border py-4 px-4">
+					<div class="mb-4">
+
+					<ul class="nav flex-column nav-pills">
+
+
+					{% block content %}
+
+					<form method="POST" class="form-group">
+						{% csrf_token %}
+						{{ form.as_p }}
+
+						<p> <button type="submit" class="btn btn-success" style="margin-right:10px">Search</button> <a class="btn btn-primary" href="{% url 'self_profile' %}">Done</a> </p>
+					</form>
+					{% endblock %}
+
+					</ul>
+					</div>
+					</div>
+				</div>
+				<div class="col-md-8">
+						{% if list_of_all_courses %}
+
+						<ul class="list-group list-scroll">
+
+						{% for course in list_of_all_courses %}
+
+							<li class="list-group-item">
+							<b> {{course.subject}} {{course.course_number}}: {{course.course_name}}</b>
+
+
+								{% if not course in added_courses %}
+
+									<p class="py-2"><a class="btn btn-sm btn-outline-primary float-right" align="right" href= "{% url 'add_uva_course'  course.id %}">Add Course</a></p>
+								{% else %}
+									<p class="py-2"><button class="btn btn-sm btn-dark disabled float-right" align="right">Already Added</button></p>
+								{% endif %}
+
+							</li>
+
+						{% endfor %}
+
+						</ul>
+
+					{% else %}
+
+						<p>Your search did not return any results.</p>
+
+					{% endif %}
+				</div>
+			</div>
+
+
+
+
+
+  {% else %}
+  <a>Please login first to view the list of courses.</a>
+  {% endif %}
+	</div>
+
+</body>
+{% include 'studybuddyfinder/footer.html' %}
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<!--loads navbar, header and bootstrap-->
+{% load static %}
+<link rel="stylesheet" type="text/css" href='{% static "index.css" %}'>
+{% load socialaccount %}
+
+<html lang="en">
+<head>
+	{% if alert_flag %}
+		<script>alert("Thank you for registering!")</script>  
+	{% endif %}
+    <meta charset="UTF-8">
+    <title>Home</title>
+	{% if user.is_authenticated %}
+		{% include 'studybuddyfinder/header.html' %}
+	{% else %}
+		{% include 'studybuddyfinder/notLoggedInHeader.html' %}
+	{% endif %}
+		
+</head>
+
+<body>
+
+ {% if user.is_authenticated %}
+<div class="container">
+  <h2>Welcome, {{ user.username }}!</h2>
+  <ul>
+  <li class="nav-item"><a href="{% url 'edit_account' %}">Edit Profile</a></li>
+  <li><a href="{% url 'self_profile' %}">View Profile</a></li>
+  <li><a href="{% url 'user_list' %}">View Users List</a></li>
+  <li><a href="{% url 'friends_list' 0 %}">View Friends List</a></li>
+  <li><a href="{% url 'logout' %}">Log Out</a></li>
+  
+</div>
+
+  {% else %}
+  
+<div class="masthead w-100">
+  <div class="container-fluid h-100 w-100">
+    <div class="row h-100 align-items-center">
+      <div class="col-12 text-center">
+        <h1 class="font-weight-bold text-white">UVA Study Buddy Finder</h1>
+        <p class="lead text-white">Start finding a study buddy for your classes now!</p>
+		<a class="btn btn-primary btn-lg" href="{% provider_login_url 'google' %}">Sign Up/Login</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+	
+  
+  {% endif %}
+
+</body>
+
+{% include 'studybuddyfinder/footer.html' %}
+
+
+</html>

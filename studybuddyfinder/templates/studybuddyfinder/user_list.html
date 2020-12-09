@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+{% load static %}
+{% load socialaccount %}
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <title>Search Users</title>
+
+	{% if user.is_authenticated %}
+		{% include 'studybuddyfinder/header.html' %}
+	{% else %}
+		{% include 'studybuddyfinder/notLoggedInHeader.html' %}
+	{% endif %}
+
+</head>
+
+<body>
+
+<div class="container" style="padding-top:65px; padding-bottom:75px">
+<!-- Checks if user is logged in first otherwise they are not allowed to see other users -->
+	{% if user.is_authenticated %}
+		<div class="row">
+			<div class="col-md-4">
+				<h2>Find a Buddy</h2>
+			</div>
+			<div class="col-md-8">
+				<ul>
+				<h2>Search Results</h2>
+				</ul>
+			</div>
+		</div>
+		
+			
+			<div class="row">
+				<div class="col-md-4 px-0">
+					<div class="border py-4 px-4">
+					<div class="mb-4">
+					
+					<ul class="nav flex-column nav-pills">
+					
+					
+					{% block content %}
+					
+					<form method="POST" class="form-group">
+						{% csrf_token %}
+						<!--{{ form.as_p }}-->
+						
+						<li class="nav-item"><p class="fa fa-fw fa-star-o align-self-center mr-2 t">{{ form.restrict_school.label}} <small>{{ form.restrict_school}}</small></p></li>
+						<li class="nav-item"><p class="fa fa-fw fa-star-o align-self-center mr-2">{{ form.restrict_year.label}} {{ form.restrict_year}}</p></li>
+						<li class="nav-item"><p class="fa fa-fw fa-star-o align-self-center mr-2">{{ form.restrict_major.label}} <small>{{ form.restrict_major}}</small></p></li>
+						<li class="nav-item"><p class="fa fa-fw fa-star-o align-self-center mr-2">{{ form.class_subject.label}} {{ form.class_subject}}</p></li>
+						<li class="nav-item"><p class="fa fa-fw fa-star-o align-self-center mr-2">{{ form.class_number.label}} {{ form.class_number}}</p></li>
+						<li class="nav-item"><p class="fa fa-fw fa-star-o align-self-center mr-2">{{ form.class_name.label}} {{ form.class_name}}</p></li>
+						<button type="submit" class="btn btn-secondary">Search</button>
+					</form>
+					{% endblock %}
+			
+					</ul>
+					</div>
+					</div>
+				</div>
+				<div class="col-md-8">
+						
+
+						<ul>
+						{% if list_of_all_users %}
+						{% for user_objects in list_of_all_users %}
+								
+							<li class="list-group-item">
+							<b><a href="{% url 'profile' user_objects.user.username %}">{{ user_objects.user.username }}</a></b>
+								<p>
+								{% if user_objects.student_verified %}
+									🌟UVA Student Verified <br>
+								{% else %}
+									❌UVA Student NOT Verified<br>
+								{% endif %}
+								
+								{% if not user_objects.hide_school %}
+								 School: {{ user_objects.school}} <br>
+								{% endif %}
+								
+								{% if not user_objects.hide_major %}
+								 Major: {{ user_objects.major}} <br>
+								{% endif %}
+								
+								{% if not user_objects.hide_year %}
+								 Year: {{ user_objects.year}} <br>
+								{% endif %}
+								</p>
+								
+								{% if not user_objects.user.id in friends %}
+									
+									<p class="py-2"><a class="btn btn-sm btn-secondary float-right" align="right" href= "{% url 'send-friend-request'  user_objects.user.id %}">Add Friend</a></p>
+									
+								{% endif %}
+								
+							</li>
+					
+								{% endfor %}
+							{% else %}
+							<p>Your search did not return any results.</p>
+					
+							{% endif %}	
+						</ul>
+
+					
+					
+						
+				</div>
+			</div>
+			
+			
+
+			
+
+  {% else %}
+  <a>Please login first to view the list of users.</a>
+  {% endif %}
+	</div>
+
+</body>
+{% include 'studybuddyfinder/footer.html' %}
+</html>
+
