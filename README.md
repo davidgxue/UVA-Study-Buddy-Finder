@@ -7,7 +7,7 @@ CS 3240 Project-2-02 UVA Study Buddy Finder
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/uva-cs3240-f20/project-2-02">
+  <a href="https://github.com/Linusky17/UVA-Study-Buddy-Finder">
     <img src="studybuddyfinder/static/icon.png" alt="Logo" width="80" height="80">
   </a>
 
@@ -17,7 +17,7 @@ CS 3240 Project-2-02 UVA Study Buddy Finder
     Project created for CS 3240 by Team Sherriff's Deputies (see developers below)
     <br />
     <br />
-    <a href="https://studdy-buddy-finder.herokuapp.com/">View Demo Website</a>
+    <a href="https://uva-study-buddy-finder.herokuapp.com/">View Demo Website</a>
   </p>
 </p>
 
@@ -130,7 +130,7 @@ Libraries and APIs:
 * []()Sindhu Mente - snm6dhh@virginia.edu
 
 
-Project Link: [https://github.com/uva-cs3240-f20/project-2-02](https://github.com/uva-cs3240-f20/project-2-02)
+Project Link: [https://github.com/Linusky17/UVA-Study-Buddy-Finder](https://github.com/Linusky17/UVA-Study-Buddy-Finder)
 
 
 
