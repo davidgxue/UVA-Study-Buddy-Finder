@@ -1,5 +1,5 @@
 # project-2-02
-CS 3240 Project-2-02 UVA Study Buddy Finder
+UVA Study Buddy Finder
 
 
 
@@ -11,10 +11,10 @@ CS 3240 Project-2-02 UVA Study Buddy Finder
     <img src="studybuddyfinder/static/icon.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">UVA CS 3240 Project: UVA Study Buddy Finder</h3>
+  <h3 align="center">Project: UVA Study Buddy Finder</h3>
 
   <p align="center">
-    Project created for CS 3240 by Team Sherriff's Deputies (see developers below)
+    Project created by Team Sherriff's Deputies (see developers below)
     <br />
     <br />
     <a href="https://uva-study-buddy-finder.herokuapp.com/">View Demo Website</a>
